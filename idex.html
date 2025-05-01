@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AETERNO - Login</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #ff9a9e, #fad0c4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+        background: #fff;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+      }
+  
+      h1 {
+        margin-bottom: 20px;
+        color: #ff527b;
+      }
+  
+      input {
+        width: 90%;
+        padding: 12px;
+        margin: 10px 0;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+    }
+
+    button {
+      background: #ff527b;
+      color: white;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #023154;
+    }
+
+    .error {
+      color: rgb(4, 39, 62);
+      margin-top: 10px;
+    }
+
+    a {
+        color: #ff527b;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" id="login-container">
+      <h1>Login to AETERNO</h1>
+      <input type="email" id="login-email" placeholder="Enter your email" required />
+      <input type="password" id="login-password" placeholder="Enter your password" required />
+      <button onclick="login()">Login</button>
+      <p class="error" id="error-msg"></p>
+      <p>Don't have an account? <a onclick="showSignup()">Sign up</a></p>
+    </div>
+  
+    <div class="container" id="signup-container" style="display: none;">
+      <h1>Sign Up for AETERNO</h1>
+      <input type="email" id="signup-email" placeholder="Enter your email" required />
+      <input type="password" id="signup-password" placeholder="Create a password" required />
+      <button onclick="signup()">Sign Up</button>
+      <p class="error" id="signup-error-msg"></p>
+      <p>Already have an account? <a onclick="showLogin()">Login</a></p>
+    </div>
+    <script>
+        function showSignup() {
+          document.getElementById("login-container").style.display = "none";
+          document.getElementById("signup-container").style.display = "block";
+        }
+    
+        function showLogin() {
+          document.getElementById("signup-container").style.display = "none";
+          document.getElementById("login-container").style.display = "block";
+        }
+    
+        function signup() {
+          let email = document.getElementById("signup-email").value.trim();
+          let password = document.getElementById("signup-password").value.trim();
+    
+          if (email && password) {
+            // Save user data if not already present
+            const users = JSON.parse(localStorage.getItem("users") || "{}");
+            if (users[email]) {
+              document.getElementById("signup-error-msg").textContent = "User already exists. Please login.";
+              return;
+            }
+            users[email] = password;
+            localStorage.setItem("users", JSON.stringify(users));
+    
+            alert("Signup successful! Please login.");
+            showLogin();
+          } else {
+            document.getElementById("signup-error-msg").textContent = "Please enter valid email and password.";
+          }
+        }
+    
+        function login() {
+          let email = document.getElementById("login-email").value.trim();
+          let password = document.getElementById("login-password").value.trim();
+    
+          const users = JSON.parse(localStorage.getItem("users") || "{}");
+    
+          if (users[email] && users[email] === password) {
+            // Save current logged-in user
+            localStorage.setItem("userEmail", email);
+            window.location.href = "homepage.html";
+          } else {
+            document.getElementById("error-msg").textContent = "Invalid email or password.";
+          }
+        }
+    </script>
+</body>
+</html>            

@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AETERNO - Time Management</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@600&display=swap');
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #fff0f5, #ffe4f0);
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: center;
+      background: #480048;
+      padding: 15px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+      z-index: 999;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 10px 20px;
+      font-size: 16px;
+      transition: background 0.3s ease, transform 0.2s;
+    }
+
+    .navbar a:hover {
+      background: #a64ca6;
+      border-radius: 10px;
+      transform: scale(1.1);
+    }
+    .container {
+      max-width: 1000px;
+      margin: 120px auto 50px;
+      background: #fffafc;
+      padding: 40px;
+      border-radius: 25px;
+      box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease-in-out;
+    }
+
+    .content-section {
+      display: none;
+      animation: fadeIn 0.8s;
+    }
+
+    #home {
+      display: block;
+    }
+
+    h1, h2 {
+      font-family: 'Roboto Slab', serif;
+      color: #480048;
+    }
+
+    p {
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .collapsible {
+      background-color: #6a0572;
+      color: white;
+      padding: 10px;
+      width: 100%;
+      border: none;
+      text-align: left;
+      cursor: pointer;
+      border-radius: 10px;
+      font-size: 18px;
+      margin-top: 15px;
+    }
+
+    .collapsible:hover {
+      background-color: #a64ca6;
+    }
+    .content {
+      display: none;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      margin-top: 5px;
+      background: #fff0f7;
+    }
+
+    .logout-btn {
+      background: #a64ca6;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-left: auto;
+    }
+
+    .logout-btn:hover {
+      background: darkred;
+    }
+    .todo-list {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .todo-list li {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      background-color: #fbe8fa;
+      padding: 12px 18px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      gap: 10px;
+    }
+
+    .todo-list span {
+      flex: 1 1 20%;
+    }
+    .todo-list input[type="time"],
+    .todo-list input[type="text"] {
+      flex: 1 1 20%;
+      padding: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .todo-list button {
+      background-color: #d668a8;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .todo-list button:hover {
+      background-color: #a64ca6;
+    }
+
+    .comment-box {
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .reward-popup {
+      display: none;
+      position: fixed;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #ffccff;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      z-index: 1001;
+      animation: pop 0.5s ease-out;
+    }
+
+    @keyframes pop {
+      0% {transform: translate(-50%, -50%) scale(0.5);}
+      100% {transform: translate(-50%, -50%) scale(1);}
+    }
+    .team-list {
+      list-style: none;
+      padding: 0;
+      font-size: 18px;
+    }
+
+    .team-list li {
+      background: #6a0572;
+      color: white;
+      margin: 5px 0;
+      padding: 12px;
+      border-radius: 10px;
+    }
+
+    .contact form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 400px;
+      margin: auto;
+    }
+    .contact input, .contact textarea {
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    .contact button {
+      background: #6a0572;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .contact button:hover {
+      background: #a64ca6;
+    }
+
+    .quote {
+      font-size: 20px;
+      font-weight: 500;
+      margin-top: 20px;
+      color: #7e57c2;
+      border-top: 2px dashed #b388eb;
+      padding-top: 15px;
+    }
+
+    img {
+      max-width: 500%;
+      border-radius: 100px;
+      margin-top: 20px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .weekly-comment {
+      margin-top: 10px;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    </style>
+    </head>
+    <body onload="checkLogin()">
+      <div class="navbar">
+        <a onclick="showSection('home')">Home</a>
+        <a onclick="showSection('solutions')">Solutions</a>
+        <a onclick="showSection('team')">Meet Our Team</a>
+        <a onclick="showSection('contact')">Contact Us</a>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      </div>
+    
+      <div class="container">
+        <div id="home" class="content-section">
+          <h1>AETERNO - Time Management Guide</h1>
+          <img src="time.jpg" alt="Time Management image">
+          <p>Welcome to AETERNO, your guide to effective time management! Learn how to manage your time efficiently with practical and simple tips.</p>
+          <p class="quote">✨ “Time isn’t the main thing. It’s the only thing.” – Miles Davis</p>
+        </div>
+        <div id="solutions" class="content-section">
+        <h2>Solutions</h2>
+        <button class="collapsible">To-Do List</button>
+        <div class="content">
+          <ul class="todo-list">
+            <li>
+              <span>Complete Assignment</span>
+              <input type="time" placeholder="Start Time">
+              <input type="time" placeholder="End Time">
+              <textarea placeholder="Why incomplete?"></textarea>
+              <button onclick="completeTask(this)">Complete</button>
+            </li>
+            <li>
+              <span>Exercise for 30 mins</span>
+              <input type="time" placeholder="Start Time">
+              <input type="time" placeholder="End Time">
+              <textarea placeholder="Why incomplete?"></textarea>
+              <button onclick="completeTask(this)">Complete</button>
+            </li>
+            <li>
+              <span>Meditate for 10 mins</span>
+              <input type="time" placeholder="Start Time">
+              <input type="time" placeholder="End Time">
+              <textarea placeholder="Why incomplete?"></textarea>
+              <button onclick="completeTask(this)">Complete</button>
+            </li>
+            <li>
+              <span>Plan Your Day</span>
+              <input type="time" placeholder="Start Time">
+              <input type="time" placeholder="End Time">
+              <textarea placeholder="Why incomplete?"></textarea>
+              <button onclick="completeTask(this)">Complete</button>
+            </li>
+            <li>
+              <span>Work on a Hobby</span>
+              <input type="time" placeholder="Start Time">
+              <input type="time" placeholder="End Time">
+              <textarea placeholder="Why incomplete?"></textarea>
+              <button onclick="completeTask(this)">Complete</button>
+            </li>
+            <li>
+              <span>Call a Friend/Family</span>
+              <input type="time" placeholder="Start Time">
+              <input type="time" placeholder="End Time">
+              <textarea placeholder="Why incomplete?"></textarea>
+              <button onclick="completeTask(this)">Complete</button>
+            </li>
+            <li>
+              <span>Declutter Your Workspace</span>
+              <input type="time" placeholder="Start Time">
+              <input type="time" placeholder="End Time">
+              <textarea placeholder="Why incomplete?"></textarea>
+              <button onclick="completeTask(this)">Complete</button>
+            </li>
+            <li>
+              <span>Get 7-8 Hours of Sleep</span>
+              <input type="time" placeholder="Start Time">
+              <input type="time" placeholder="End Time">
+              <textarea placeholder="Why incomplete?"></textarea>
+              <button onclick="completeTask(this)">Complete</button>
+            </li>
+            <li>
+              <span>Revision</span>
+              <input type="time" placeholder="Start Time">
+              <input type="time" placeholder="End Time">
+              <textarea placeholder="Why incomplete?"></textarea>
+              <button onclick="completeTask(this)">Complete</button>
+            </li>
+          </ul>
+        </div>
+        <button class="collapsible">Daily Planner</button>
+        <div class="content">
+          <input type="text" placeholder="Task 1">
+          <input type="time" placeholder="Start Time">
+          <input type="time" placeholder="End Time">
+          <input type="text" placeholder="Task 2">
+          <input type="time" placeholder="Start Time">
+          <input type="time" placeholder="End Time">
+          <input type="text" placeholder="Task 3">
+          <input type="time" placeholder="Start Time">
+          <input type="time" placeholder="End Time">
+          <input type="text" placeholder="Task 4">
+          <input type="time" placeholder="Start Time">
+          <input type="time" placeholder="End Time">
+          <input type="text" placeholder="Task 5">
+          <input type="time" placeholder="Start Time">
+          <input type="time" placeholder="End Time">
+        </div>
+        <button class="collapsible">Weekly Planner</button>
+        <div class="content">
+          <div>
+            <label>Monday</label>
+            <input type="text" placeholder="Task">
+            <button onclick="showReward()">Complete</button>
+            <textarea class="weekly-comment" placeholder="How did you feel or what did you learn?"></textarea>
+          </div>
+          <div>
+            <label>Tuesday</label>
+            <input type="text" placeholder="Task">
+            <button onclick="showReward()">Complete</button>
+            <textarea class="weekly-comment" placeholder="How did you feel or what did you learn?"></textarea>
+          </div>
+          <div>
+            <label>Wednesday</label>
+            <input type="text" placeholder="Task">
+            <button onclick="showReward()">Complete</button>
+            <textarea class="weekly-comment" placeholder="How did you feel or what did you learn?"></textarea>
+          </div>
+          <div>
+            <label>Thursday</label>
+            <input type="text" placeholder="Task">
+            <button onclick="showReward()">Complete</button>
+            <textarea class="weekly-comment" placeholder="How did you feel or what did you learn?"></textarea>
+          </div>
+          <div>
+            <label>Friday</label>
+            <input type="text" placeholder="Task">
+            <button onclick="showReward()">Complete</button>
+            <textarea class="weekly-comment" placeholder="How did you feel or what did you learn?"></textarea>
+          </div>
+          <div>
+            <label>Saturday</label>
+            <input type="text" placeholder="Task">
+            <button onclick="showReward()">Complete</button>
+            <textarea class="weekly-comment" placeholder="How did you feel or what did you learn?"></textarea>
+          </div>
+          <div>
+            <label>Sunday</label>
+            <input type="text" placeholder="Task">
+            <button onclick="showReward()">Complete</button>
+            <textarea class="weekly-comment" placeholder="How did you feel or what did you learn?"></textarea>
+          </div>
+        </div>
+      </div>
+  
+      <div id="team" class="content-section">
+        <h2>Meet Our Team</h2>
+        <ul class="team-list">
+          <li>Neha Kumari</li>
+          <li>Yukta Mukhee</li>
+          <li>Sayandeep Roy Chowdhury</li>
+          <li>Sumit Majumder</li>
+          <li>Swarnali Das</li>
+        </ul>
+      </div>
+  
+      <div id="contact" class="content-section">
+        <h2>Contact Us</h2>
+        <div class="contact">
+          <form id="contactForm">
+            <input type="text" id="name" placeholder="Your Name" required>
+            <input type="email" id="email" placeholder="Your Email" required>
+            <textarea id="message" placeholder="Your Message" required></textarea>
+            <button type="submit">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  
+    <div class="reward-popup" id="rewardPopup">
+      🎉 Congrats! Your reward is: <strong id="rewardText"></strong>
+    </div>
+  
+    <script>
+      const rewards = ["Movie night 🍿", "Shopping spree 🛍", "Gaming time 🎮", "Treat yourself 🍫", "Relaxing walk 🚶‍♀"];
+  
+      function showReward() {
+        const reward = rewards[Math.floor(Math.random() * rewards.length)];
+        document.getElementById("rewardText").innerText = reward;
+        const popup = document.getElementById("rewardPopup");
+        popup.style.display = "block";
+        setTimeout(() => {
+          popup.style.display = "none";
+        }, 3000);
+      }
+  
+      function checkLogin() {
+        let userEmail = localStorage.getItem("userEmail");
+        if (!userEmail) {
+          window.location.href = "index.html";
+        }
+      }
+      function showSection(sectionId) {
+        var sections = document.getElementsByClassName('content-section');
+        for (var i = 0; i < sections.length; i++) {
+          sections[i].style.display = 'none';
+        }
+        document.getElementById(sectionId).style.display = 'block';
+      }
+  
+      function completeTask(button) {
+        button.parentElement.style.textDecoration = "line-through";
+        button.style.background = "#ccc";
+        button.disabled = true;
+      }
+  
+      function logout() {
+        localStorage.removeItem("userEmail");
+        localStorage.removeItem("userPassword");
+        alert("Logged out successfully!");
+        window.location.href = "index.html";
+      }
+      document.addEventListener("DOMContentLoaded", function () {
+        var coll = document.getElementsByClassName("collapsible");
+        for (var i = 0; i < coll.length; i++) {
+          coll[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            content.style.display = content.style.display === "block" ? "none" : "block";
+          });
+        }
+  
+        document.getElementById("contactForm").addEventListener("submit", function (event) {
+          event.preventDefault();
+          alert("Your message has been sent successfully!");
+          document.getElementById("contactForm").reset();
+        });
+      });
+    </script>
+  </body>
+  </html>                      
